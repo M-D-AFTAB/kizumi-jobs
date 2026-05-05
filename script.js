@@ -1,14 +1,23 @@
-const jobsList = document.getElementById('jobsList');
+// 1. The API Fetcher (Calls your Vercel Serverless Function)
+async function getAdzunaJobs(query = '', location = '') {
+    const url = `/api/get-jobs?what=${encodeURIComponent(query)}&where=${encodeURIComponent(location)}`;
 
-// Example data structure based on your screenshots
-const mockJobs = [
-    { title: "Senior Software Engineer", company: "Kizumi Tech", loc: "Remote", salary: "130k - 170k", tags: ["Python", "Go", "AWS"], time: "10m" },
-    { title: "DevOps Engineer", company: "CloudScale", loc: "Paris", salary: "80k - 150k", tags: ["Kubernetes", "CI/CD", "Docker"], time: "40m" },
-    { title: "Product Designer", company: "Creative Flow", loc: "Mumbai", salary: "60k - 90k", tags: ["Figma", "UI/UX"], time: "1h" }
-];
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('API Error');
+        const data = await response.json();
+        return data.results || []; 
+    } catch (error) {
+        console.error('Fetch Error:', error);
+        return [];
+    }
+}
 
+// 2. The Renderer (Creates the HTML cards)
 function displayJobs(jobs) {
-    jobsList.innerHTML = '';
+    const jobsList = document.getElementById('jobsList');
+    jobsList.innerHTML = ''; // Clear loading message
+
     jobs.forEach(job => {
         const item = document.createElement('div');
         item.className = 'job-item';
@@ -20,7 +29,7 @@ function displayJobs(jobs) {
                     <h3>${job.title}</h3>
                     <div class="job-meta">
                         <span class="loc-pill">${job.loc}</span>
-                        <span class="sal-pill">USD ${job.salary}</span>
+                        <span class="sal-pill">${job.salary}</span>
                     </div>
                 </div>
             </div>
@@ -33,5 +42,46 @@ function displayJobs(jobs) {
     });
 }
 
-// Initialize with mock data
-displayJobs(mockJobs);
+// 3. The Controller (Connects Fetcher and Renderer)
+async function updateJobFeed(keyword = 'Software', location = '') {
+    const jobsContainer = document.getElementById('jobsList');
+    jobsContainer.innerHTML = '<p style="text-align:center; width:100%; color:#718096;">Searching for creative roles...</p>';
+
+    const rawJobs = await getAdzunaJobs(keyword, location);
+    
+    if (rawJobs.length === 0) {
+        jobsContainer.innerHTML = '<p style="text-align:center; width:100%;">No jobs found. Try adjusting your search.</p>';
+        return;
+    }
+
+    // Map the Adzuna data to our clean UI format
+    const formattedJobs = rawJobs.map(job => ({
+        title: job.title,
+        company: job.company.display_name,
+        loc: job.location.display_name,
+        salary: job.salary_min ? `USD ${Math.round(job.salary_min).toLocaleString()}` : 'Salary Undisclosed',
+        tags: [job.category.label, job.contract_type].filter(Boolean),
+        time: new Date(job.created).toLocaleDateString()
+    }));
+
+    displayJobs(formattedJobs);
+}
+
+// 4. UI Interactivity (Search Button & Tags)
+document.querySelector('.search-btn').addEventListener('click', () => {
+    const keyword = document.getElementById('keyword').value;
+    const location = document.getElementById('location').value;
+    updateJobFeed(keyword, location);
+});
+
+// Optional: Allow pressing "Enter" to search
+document.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        const keyword = document.getElementById('keyword').value;
+        const location = document.getElementById('location').value;
+        updateJobFeed(keyword, location);
+    }
+});
+
+// 5. Initial Load
+updateJobFeed('Creative');
