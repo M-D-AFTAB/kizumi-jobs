@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kizumi Jobs | Creative Career Search</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header-section">
+        <nav class="navbar">
+            <div class="logo">kizumi<span>jobs</span></div>
+            <div class="nav-links">
+                <a href="#">About</a>
+                <a href="#">Search Jobs</a>
+            </div>
+        </nav>
+
+        <div class="hero">
+            <h1>Find your next role with<br><span>Creative-powered search</span></h1>
+            <p class="stats">Discover your next opportunity in tech and design.</p>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <div class="input-group main-input">
+                        <span class="icon">🔍</span>
+                        <input type="text" id="keyword" placeholder="Job title or keywords...">
+                    </div>
+                    <div class="divider"></div>
+                    <div class="input-group loc-input">
+                        <span class="icon">📍</span>
+                        <input type="text" id="location" placeholder="Location">
+                    </div>
+                    <button class="search-btn">Search</button>
+                </div>
+                <div class="tags">
+                    <span class="tag">Remote</span>
+                    <span class="tag">Backend</span>
+                    <span class="tag">Frontend</span>
+                    <span class="tag">Data</span>
+                    <span class="tag">Design</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="content">
+        <div id="jobsList" class="jobs-list">
+            <p style="text-align: center; color: #718096;">Loading latest opportunities...</p>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
