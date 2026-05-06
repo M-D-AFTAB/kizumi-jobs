@@ -8,10 +8,10 @@ const supabase = createClient(
 
 export default async function handler(req, res) {
 
-    const authHeader = req.headers['authorization'];
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-        return res.status(401).json({ error: 'Unauthorized' });
-    }
+    // const authHeader = req.headers['authorization'];
+    // if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    //     return res.status(401).json({ error: 'Unauthorized' });
+    // }
     // 1. Fetch from Adzuna
     const adzunaUrl = `https://api.adzuna.com/v1/api/jobs/in/search/1?app_id=${process.env.ADZUNA_APP_ID}&app_key=${process.env.ADZUNA_APP_KEY}&results_per_page=50&content-type=application/json`;
 
