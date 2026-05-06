@@ -105,4 +105,11 @@ document.querySelectorAll('.tag').forEach(tag => {
 });
 
 // Initial Load
-updateJobFeed('Creative');
+updateJobFeed('', '');
+
+document.querySelector('.search-btn').addEventListener('click', () => {
+    const keyword = document.getElementById('keyword').value;
+    const location = document.getElementById('location').value;
+    // Calling with empty strings will trigger the "show all" logic in our API
+    updateJobFeed(keyword, location);
+});
