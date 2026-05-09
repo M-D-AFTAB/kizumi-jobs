@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Kizumi Ultra Login</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  height: 100vh;
+  overflow: hidden;
+  background: #021814;
+}
+
+/* 🌊 MOVING GRADIENT BACKGROUND */
+.bg {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    #00ffcc,
+    #004d3d,
+    #00cc99,
+    #002d24
+  );
+  animation: moveBg 10s linear infinite;
+  filter: blur(80px);
+  opacity: 0.6;
+}
+
+@keyframes moveBg {
+  0% { transform: translate(0,0); }
+  50% { transform: translate(-25%, -25%); }
+  100% { transform: translate(0,0); }
+}
+
+/* ✨ FLOATING DOTS */
+.dots {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(#00ffcc 1px, transparent 1px);
+  background-size: 30px 30px;
+  opacity: 0.15;
+}
+
+/* 💎 LOGIN CARD */
+.login-box {
+  position: relative;
+  z-index: 2;
+  width: 340px;
+  padding: 35px;
+  margin: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  background: rgba(0, 30, 25, 0.6);
+  text-align: center;
+  overflow: hidden;
+}
+
+/* 🔥 ANIMATED BORDER */
+.login-box::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 20px;
+  background: linear-gradient(45deg, #00ffcc, transparent, #00ffcc);
+  animation: rotate 4s linear infinite;
+  z-index: -1;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Inner content fix */
+.login-box::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: rgba(0, 30, 25, 0.9);
+  border-radius: 18px;
+  z-index: -1;
+}
+
+/* Title */
+.login-box h2 {
+  color: #00ffcc;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px #00ffcc;
+}
+
+/* Inputs */
+.login-box input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: none;
+  background: rgba(0,0,0,0.4);
+  color: white;
+  outline: none;
+  transition: 0.3s;
+}
+
+.login-box input:focus {
+  box-shadow: 0 0 12px #00ffcc;
+}
+
+/* Button */
+.login-box button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(45deg, #00ffcc, #00cc99);
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-box button:hover {
+  transform: scale(1.07);
+  box-shadow: 0 0 20px #00ffcc;
+}
+
+/* 🖱️ CURSOR SPARKLE */
+.sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #00ffcc;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: fade 0.8s linear forwards;
+}
+
+@keyframes fade {
+  to {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="bg"></div>
+<div class="dots"></div>
+
+<div class="login-box">
+  <h2>Kizumi Login</h2>
+
+  <input type="text" placeholder="Username">
+  <input type="email" placeholder="Email">
+  <input type="password" placeholder="Password">
+  <input type="password" placeholder="Confirm Password">
+
+  <button>Signup Now</button>
+</div>
+
+<script>
+document.addEventListener("mousemove", function(e){
+  let s = document.createElement("span");
+  s.classList.add("sparkle");
+  s.style.left = e.clientX + "px";
+  s.style.top = e.clientY + "px";
+  document.body.appendChild(s);
+
+  setTimeout(()=>{ s.remove(); }, 800);
+});
+</script>
+
+</body>
+</html>
