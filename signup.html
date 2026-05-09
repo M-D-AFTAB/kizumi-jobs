@@ -17,6 +17,18 @@
     <a href="login.html">Already have an account?</a>
     <button class="theme-toggle" id="themeBtn" title="Toggle theme">☀️</button>
   </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <button class="theme-toggle" id="themeBtnMobile" title="Toggle theme" style="display:none;">☀️</button>
+    <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile drawer -->
+<nav class="nav-drawer" id="navDrawer" aria-hidden="true">
+  <a href="about.html">About</a>
+  <a href="login.html">Log in</a>
 </nav>
 
 <!-- ── AUTH MAIN ── -->
@@ -126,6 +138,33 @@ import {
 initTheme();
 updateThemeIcon();
 document.getElementById('themeBtn').onclick = () => { toggleTheme(); updateThemeIcon(); };
+
+// ── Mobile controls
+function syncMobile() {
+  const mb = document.getElementById('themeBtnMobile');
+  if (mb) mb.style.display = window.innerWidth <= 700 ? '' : 'none';
+}
+syncMobile();
+window.addEventListener('resize', syncMobile);
+document.getElementById('themeBtnMobile').onclick = () => { toggleTheme(); updateThemeIcon(); };
+
+// ── Hamburger
+const hamburger = document.getElementById('hamburger');
+const drawer    = document.getElementById('navDrawer');
+hamburger.addEventListener('click', () => {
+  const open = hamburger.classList.toggle('open');
+  drawer.classList.toggle('open', open);
+  hamburger.setAttribute('aria-expanded', open);
+  drawer.setAttribute('aria-hidden', !open);
+});
+drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  hamburger.classList.remove('open'); drawer.classList.remove('open');
+}));
+document.addEventListener('click', (e) => {
+  if (!hamburger.contains(e.target) && !drawer.contains(e.target)) {
+    hamburger.classList.remove('open'); drawer.classList.remove('open');
+  }
+});
 
 // ── Redirect if already authed
 redirectIfAuthed('dashboard.html');

@@ -16,8 +16,22 @@
     <a href="about.html" class="nav-link-hide">About</a>
     <a href="login.html">Log in</a>
     <a href="signup.html" class="nav-btn">Get Started</a>
-    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">☀️</button>
+    <button class="theme-toggle" id="themeBtn" title="Toggle theme">☀️</button>
   </div>
+  <!-- Mobile controls -->
+  <div style="display:flex;align-items:center;gap:8px;">
+    <button class="theme-toggle" id="themeBtnMobile" title="Toggle theme" style="display:none;">☀️</button>
+    <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile drawer -->
+<nav class="nav-drawer" id="navDrawer" aria-hidden="true">
+  <a href="about.html">About</a>
+  <a href="login.html">Log in</a>
+  <a href="signup.html" class="nav-drawer-cta">Get Started →</a>
 </nav>
 
 <!-- ── HERO ── -->
@@ -134,10 +148,52 @@
   import { initTheme, toggleTheme, updateThemeIcon, redirectIfAuthed } from './auth.js';
   initTheme();
   updateThemeIcon();
-  // Expose toggleTheme globally for onclick
   window.toggleTheme = toggleTheme;
-  // If already logged in, go to dashboard
   redirectIfAuthed('dashboard.html');
+
+  // ── Hamburger / drawer
+  const hamburger = document.getElementById('hamburger');
+  const drawer    = document.getElementById('navDrawer');
+
+  function isMobile() { return window.innerWidth <= 700; }
+
+  // Show mobile theme btn on small screens
+  function syncMobileTheme() {
+    const mobileTbtn = document.getElementById('themeBtnMobile');
+    if (mobileTbtn) {
+      mobileTbtn.style.display = isMobile() ? '' : 'none';
+    }
+  }
+  syncMobileTheme();
+  window.addEventListener('resize', syncMobileTheme);
+
+  document.getElementById('themeBtnMobile')?.addEventListener('click', () => { toggleTheme(); updateThemeIcon(); });
+
+  hamburger.addEventListener('click', () => {
+    const open = hamburger.classList.toggle('open');
+    drawer.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', open);
+    drawer.setAttribute('aria-hidden', !open);
+  });
+
+  // Close drawer when a link inside is clicked
+  drawer.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      drawer.classList.remove('open');
+    });
+  });
+
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    if (!hamburger.contains(e.target) && !drawer.contains(e.target)) {
+      hamburger.classList.remove('open');
+      drawer.classList.remove('open');
+    }
+  });
+
+  // Desktop theme btn
+  document.getElementById('themeBtn').onclick = () => { toggleTheme(); updateThemeIcon(); };
 </script>
 </body>
 </html>

@@ -28,6 +28,29 @@
       </div>
     </div>
   </div>
+  <!-- Mobile controls — user avatar always visible, hamburger for nav -->
+  <div style="display:flex;align-items:center;gap:8px;" id="mobileNavControls">
+    <button class="theme-toggle" id="themeBtnMobile" title="Toggle theme" style="display:none;">☀️</button>
+    <div class="user-menu" id="userMenuMobile" style="display:none;">
+      <div class="user-avatar" id="userAvatarMobile" title="Account">?</div>
+      <div class="user-dropdown">
+        <div class="ud-info">
+          <div class="ud-name"  id="udNameMobile">—</div>
+          <div class="ud-email" id="udEmailMobile">—</div>
+        </div>
+        <a href="about.html">ℹ️ &nbsp;About</a>
+        <button class="logout-btn" id="logoutBtnMobile">🚪 &nbsp;Log out</button>
+      </div>
+    </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile drawer -->
+<nav class="nav-drawer" id="navDrawer" aria-hidden="true">
+  <a href="about.html">About</a>
 </nav>
 
 <!-- ── DASHBOARD HEADER ── -->
@@ -93,29 +116,69 @@ import {
 initTheme();
 updateThemeIcon();
 document.getElementById('themeBtn').onclick = () => { toggleTheme(); updateThemeIcon(); };
+document.getElementById('themeBtnMobile').onclick = () => { toggleTheme(); updateThemeIcon(); };
+
+// ── Hamburger / drawer
+const hamburger = document.getElementById('hamburger');
+const drawer    = document.getElementById('navDrawer');
+
+function isMobile() { return window.innerWidth <= 700; }
+
+function syncMobileControls() {
+  const mobile = isMobile();
+  document.getElementById('themeBtnMobile').style.display  = mobile ? '' : 'none';
+  document.getElementById('userMenuMobile').style.display  = mobile ? '' : 'none';
+}
+syncMobileControls();
+window.addEventListener('resize', syncMobileControls);
+
+hamburger.addEventListener('click', () => {
+  const open = hamburger.classList.toggle('open');
+  drawer.classList.toggle('open', open);
+  hamburger.setAttribute('aria-expanded', open);
+  drawer.setAttribute('aria-hidden', !open);
+});
+drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  hamburger.classList.remove('open');
+  drawer.classList.remove('open');
+}));
+document.addEventListener('click', (e) => {
+  if (!hamburger.contains(e.target) && !drawer.contains(e.target)) {
+    hamburger.classList.remove('open');
+    drawer.classList.remove('open');
+  }
+});
 
 // ── Guard: require authentication before showing anything
 requireAuth((user) => {
-  // Populate user menu
   const initial = (user.displayName || user.email || '?')[0].toUpperCase();
+
+  // Desktop user menu
   document.getElementById('userAvatar').textContent = initial;
   document.getElementById('udName').textContent  = user.displayName || 'User';
   document.getElementById('udEmail').textContent = user.email || '';
 
-  // Kick off the app
+  // Mobile user menu (mirrors desktop)
+  document.getElementById('userAvatarMobile').textContent = initial;
+  document.getElementById('udNameMobile').textContent  = user.displayName || 'User';
+  document.getElementById('udEmailMobile').textContent = user.email || '';
+
   initDashboard();
 });
 
-// ── User menu toggle
-const userMenu = document.getElementById('userMenu');
-document.getElementById('userAvatar').addEventListener('click', (e) => {
-  e.stopPropagation();
-  userMenu.classList.toggle('open');
-});
-document.addEventListener('click', () => userMenu.classList.remove('open'));
+// ── User menu toggles
+function setupUserMenu(avatarId, menuId) {
+  const menu   = document.getElementById(menuId);
+  const avatar = document.getElementById(avatarId);
+  avatar.addEventListener('click', (e) => { e.stopPropagation(); menu.classList.toggle('open'); });
+  document.addEventListener('click', () => menu.classList.remove('open'));
+}
+setupUserMenu('userAvatar',       'userMenu');
+setupUserMenu('userAvatarMobile', 'userMenuMobile');
 
 // ── Logout
 document.getElementById('logoutBtn').addEventListener('click', logout);
+document.getElementById('logoutBtnMobile').addEventListener('click', logout);
 
 // ══════════════════════════════════════
 // DASHBOARD LOGIC
@@ -127,21 +190,18 @@ async function initDashboard() {
   renderSkeletons();
   await fetchJobs('', '');
 
-  // Search button
   document.getElementById('searchBtn').addEventListener('click', () => {
     const kw  = document.getElementById('keyword').value;
     const loc = document.getElementById('location').value;
     fetchJobs(kw, loc);
   });
 
-  // Enter key in inputs
   ['keyword', 'location'].forEach(id => {
     document.getElementById(id).addEventListener('keydown', (e) => {
       if (e.key === 'Enter') document.getElementById('searchBtn').click();
     });
   });
 
-  // Filter tags
   document.getElementById('filterTags').addEventListener('click', (e) => {
     const tag = e.target.closest('.tag');
     if (!tag) return;
@@ -151,7 +211,6 @@ async function initDashboard() {
     renderJobs(filterAndSort(allJobs));
   });
 
-  // Sort
   document.getElementById('sortSelect').addEventListener('change', () => {
     renderJobs(filterAndSort(allJobs));
   });
@@ -256,7 +315,7 @@ function renderSkeletons() {
       <div class="skeleton" style="width:46px;height:46px;border-radius:10px;flex-shrink:0"></div>
       <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
         <div class="skeleton" style="height:12px;width:100px;"></div>
-        <div class="skeleton" style="height:16px;width:260px;"></div>
+        <div class="skeleton" style="height:16px;width:260px;max-width:100%;"></div>
         <div style="display:flex;gap:8px;">
           <div class="skeleton" style="height:20px;width:80px;border-radius:5px;"></div>
           <div class="skeleton" style="height:20px;width:80px;border-radius:5px;"></div>
