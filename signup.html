@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up — Kizumi Jobs</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>⚡</text></svg>">
+</head>
+<body class="auth-body">
+
+<!-- ── NAVBAR ── -->
+<nav class="navbar">
+  <a href="index.html" class="logo">kizumi<span>jobs</span></a>
+  <div class="nav-links">
+    <a href="about.html" class="nav-link-hide">About</a>
+    <a href="login.html">Already have an account?</a>
+    <button class="theme-toggle" id="themeBtn" title="Toggle theme">☀️</button>
+  </div>
+</nav>
+
+<!-- ── AUTH MAIN ── -->
+<main class="auth-main">
+  <div class="auth-card">
+
+    <!-- Brand -->
+    <div class="auth-brand">
+      <span class="logo">kizumi<span>jobs</span></span>
+      <p>Your creative career starts here</p>
+    </div>
+
+    <h1 class="auth-title">Create your account</h1>
+    <p class="auth-subtitle">Free forever · No credit card needed</p>
+
+    <!-- Toast -->
+    <div class="auth-toast" id="toast"></div>
+
+    <!-- Form -->
+    <form id="signupForm" novalidate>
+
+      <div class="field" id="field-name">
+        <label for="name">Full name</label>
+        <div class="field-input">
+          <span class="icon">👤</span>
+          <input type="text" id="name" placeholder="Jane Doe" autocomplete="name" required>
+        </div>
+        <div class="field-error" id="err-name">Please enter your name.</div>
+      </div>
+
+      <div class="field" id="field-email">
+        <label for="email">Email address</label>
+        <div class="field-input">
+          <span class="icon">✉️</span>
+          <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
+        </div>
+        <div class="field-error" id="err-email">Please enter a valid email.</div>
+      </div>
+
+      <div class="field" id="field-password">
+        <label for="password">Password</label>
+        <div class="field-input">
+          <span class="icon">🔒</span>
+          <input type="password" id="password" placeholder="At least 8 characters" autocomplete="new-password" required>
+          <button type="button" class="toggle-pw" id="togglePw" aria-label="Show password">👁</button>
+        </div>
+        <div class="field-error" id="err-password">Password must be at least 8 characters.</div>
+      </div>
+
+      <div class="field" id="field-confirm">
+        <label for="confirm">Confirm password</label>
+        <div class="field-input">
+          <span class="icon">🔒</span>
+          <input type="password" id="confirm" placeholder="Same password again" autocomplete="new-password" required>
+          <button type="button" class="toggle-pw" id="toggleConfirm" aria-label="Show password">👁</button>
+        </div>
+        <div class="field-error" id="err-confirm">Passwords don't match.</div>
+      </div>
+
+      <!-- Password strength -->
+      <div id="pw-strength" style="margin-top:-10px;margin-bottom:14px;display:none;">
+        <div style="height:4px;border-radius:2px;background:var(--border);overflow:hidden;">
+          <div id="pw-bar" style="height:100%;width:0;border-radius:2px;transition:all 0.3s;"></div>
+        </div>
+        <div id="pw-label" style="font-size:11px;color:var(--text-3);margin-top:4px;"></div>
+      </div>
+
+      <button type="submit" class="auth-btn" id="signupBtn">
+        <span class="btn-text">Create account</span>
+        <div class="btn-loader"></div>
+      </button>
+    </form>
+
+    <!-- Divider -->
+    <div class="auth-divider">or continue with</div>
+
+    <!-- Google -->
+    <button class="google-btn" id="googleBtn">
+      <svg viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+      </svg>
+      Sign up with Google
+    </button>
+
+    <!-- Footer -->
+    <div class="auth-footer">
+      Already have an account? <a href="login.html">Log in</a>
+    </div>
+
+  </div>
+</main>
+
+<script type="module">
+import {
+  auth,
+  initTheme, toggleTheme, updateThemeIcon,
+  redirectIfAuthed,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signInWithGoogle
+} from './auth.js';
+
+// ── Theme
+initTheme();
+updateThemeIcon();
+document.getElementById('themeBtn').onclick = () => { toggleTheme(); updateThemeIcon(); };
+
+// ── Redirect if already authed
+redirectIfAuthed('dashboard.html');
+
+// ── Helpers
+const toast     = document.getElementById('toast');
+const signupBtn = document.getElementById('signupBtn');
+
+function showToast(msg, type = 'error') {
+  toast.className = `auth-toast ${type} show`;
+  toast.textContent = (type === 'error' ? '⚠️ ' : '✅ ') + msg;
+}
+
+function setLoading(on) {
+  signupBtn.disabled = on;
+  signupBtn.classList.toggle('loading', on);
+}
+
+// ── Password strength
+document.getElementById('password').addEventListener('input', (e) => {
+  const pw = e.target.value;
+  const strength = document.getElementById('pw-strength');
+  const bar      = document.getElementById('pw-bar');
+  const label    = document.getElementById('pw-label');
+
+  if (!pw) { strength.style.display = 'none'; return; }
+  strength.style.display = 'block';
+
+  let score = 0;
+  if (pw.length >= 8)  score++;
+  if (/[A-Z]/.test(pw)) score++;
+  if (/[0-9]/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+
+  const levels = [
+    { w: '25%', color: 'var(--danger)',  text: 'Weak' },
+    { w: '50%', color: 'var(--warning)', text: 'Fair' },
+    { w: '75%', color: 'var(--lime)',    text: 'Good' },
+    { w: '100%',color: 'var(--accent)',  text: 'Strong' },
+  ];
+  const lvl = levels[score - 1] || levels[0];
+  bar.style.width = lvl.w;
+  bar.style.background = lvl.color;
+  label.textContent = lvl.text;
+  label.style.color = lvl.color;
+});
+
+// ── Validate
+function validate() {
+  let ok = true;
+  const name    = document.getElementById('name').value.trim();
+  const email   = document.getElementById('email').value.trim();
+  const pw      = document.getElementById('password').value;
+  const confirm = document.getElementById('confirm').value;
+
+  const checks = [
+    ['field-name',    !name],
+    ['field-email',   !email || !/\S+@\S+\.\S+/.test(email)],
+    ['field-password',pw.length < 8],
+    ['field-confirm', pw !== confirm],
+  ];
+  checks.forEach(([id, fail]) => {
+    document.getElementById(id).classList.toggle('has-error', fail);
+    if (fail) ok = false;
+  });
+  return ok;
+}
+
+// ── Signup form
+document.getElementById('signupForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!validate()) return;
+  setLoading(true);
+  toast.classList.remove('show');
+
+  const name  = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const pw    = document.getElementById('password').value;
+
+  try {
+    const { user } = await createUserWithEmailAndPassword(auth, email, pw);
+    await updateProfile(user, { displayName: name });
+    window.location.replace('dashboard.html');
+  } catch (err) {
+    const msgs = {
+      'auth/email-already-in-use': 'An account with this email already exists.',
+      'auth/invalid-email':        'Invalid email address.',
+      'auth/weak-password':        'Password is too weak.',
+    };
+    showToast(msgs[err.code] || 'Sign-up failed. Please try again.');
+  } finally {
+    setLoading(false);
+  }
+});
+
+// ── Google signup
+document.getElementById('googleBtn').addEventListener('click', async () => {
+  try {
+    await signInWithGoogle();
+    window.location.replace('dashboard.html');
+  } catch (err) {
+    showToast('Google sign-up failed. Try again.');
+  }
+});
+
+// ── Password visibility toggles
+function pwToggle(inputId, btnId) {
+  document.getElementById(btnId).addEventListener('click', () => {
+    const input = document.getElementById(inputId);
+    const btn   = document.getElementById(btnId);
+    if (input.type === 'password') { input.type = 'text'; btn.textContent = '🙈'; }
+    else { input.type = 'password'; btn.textContent = '👁'; }
+  });
+}
+pwToggle('password', 'togglePw');
+pwToggle('confirm',  'toggleConfirm');
+</script>
+</body>
+</html>

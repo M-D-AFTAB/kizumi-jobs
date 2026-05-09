@@ -4,7 +4,6 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANO
 
 export default async function handler(req, res) {
   try {
-    // 1. Log what we are looking for
     const { what } = req.query;
     console.log("Searching for:", what);
 
@@ -21,7 +20,6 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: error.message });
     }
 
-    console.log("Raw Data Length:", data ? data.length : 0);
     return res.status(200).json({ results: data || [] });
 
   } catch (err) {

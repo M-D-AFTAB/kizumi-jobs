@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kizumi Jobs — Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>⚡</text></svg>">
+</head>
+<!-- auth-checking hides page until Firebase confirms auth state -->
+<body class="auth-checking">
+
+<!-- ── NAVBAR ── -->
+<nav class="navbar">
+  <a href="index.html" class="logo">kizumi<span>jobs</span></a>
+  <div class="nav-links">
+    <a href="about.html" class="nav-link-hide">About</a>
+    <button class="theme-toggle" id="themeBtn" title="Toggle theme">☀️</button>
+    <div class="user-menu" id="userMenu">
+      <div class="user-avatar" id="userAvatar" title="Account">?</div>
+      <div class="user-dropdown">
+        <div class="ud-info">
+          <div class="ud-name"  id="udName">—</div>
+          <div class="ud-email" id="udEmail">—</div>
+        </div>
+        <a href="about.html">ℹ️ &nbsp;About</a>
+        <button class="logout-btn" id="logoutBtn">🚪 &nbsp;Log out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ── DASHBOARD HEADER ── -->
+<header class="dashboard-header">
+  <h1>Find your next <span>creative</span> role</h1>
+  <p>Real-time listings · Salary-first · Remote-ready</p>
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <div class="search-input-group">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="text" id="keyword" placeholder="Job title or keyword…" aria-label="Job keyword">
+      </div>
+      <div class="search-divider"></div>
+      <div class="search-input-group" style="flex:0 0 auto;min-width:160px;">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+        </svg>
+        <input type="text" id="location" placeholder="Location" aria-label="Location">
+      </div>
+      <button class="search-btn" id="searchBtn">Search</button>
+    </div>
+
+    <div class="filter-tags" id="filterTags">
+      <button class="tag active" data-tag="">All</button>
+      <button class="tag" data-tag="Remote">Remote</button>
+      <button class="tag" data-tag="Backend">Backend</button>
+      <button class="tag" data-tag="Frontend">Frontend</button>
+      <button class="tag" data-tag="Data">Data</button>
+      <button class="tag" data-tag="Design">Design</button>
+    </div>
+  </div>
+</header>
+
+<!-- ── DASHBOARD BODY ── -->
+<main class="dashboard-body">
+
+  <div class="results-header">
+    <div class="results-count" id="resultsCount">Loading…</div>
+    <select class="sort-select" id="sortSelect" aria-label="Sort jobs">
+      <option value="date">Newest first</option>
+      <option value="salary">Highest salary</option>
+      <option value="company">Company A–Z</option>
+    </select>
+  </div>
+
+  <div id="jobsList"></div>
+</main>
+
+<script type="module">
+import {
+  auth,
+  requireAuth,
+  logout,
+  initTheme,
+  toggleTheme,
+  updateThemeIcon
+} from './auth.js';
+
+// ── Theme
+initTheme();
+updateThemeIcon();
+document.getElementById('themeBtn').onclick = () => { toggleTheme(); updateThemeIcon(); };
+
+// ── Guard: require authentication before showing anything
+requireAuth((user) => {
+  // Populate user menu
+  const initial = (user.displayName || user.email || '?')[0].toUpperCase();
+  document.getElementById('userAvatar').textContent = initial;
+  document.getElementById('udName').textContent  = user.displayName || 'User';
+  document.getElementById('udEmail').textContent = user.email || '';
+
+  // Kick off the app
+  initDashboard();
+});
+
+// ── User menu toggle
+const userMenu = document.getElementById('userMenu');
+document.getElementById('userAvatar').addEventListener('click', (e) => {
+  e.stopPropagation();
+  userMenu.classList.toggle('open');
+});
+document.addEventListener('click', () => userMenu.classList.remove('open'));
+
+// ── Logout
+document.getElementById('logoutBtn').addEventListener('click', logout);
+
+// ══════════════════════════════════════
+// DASHBOARD LOGIC
+// ══════════════════════════════════════
+let allJobs = [];
+let activeTag = '';
+
+async function initDashboard() {
+  renderSkeletons();
+  await fetchJobs('', '');
+
+  // Search button
+  document.getElementById('searchBtn').addEventListener('click', () => {
+    const kw  = document.getElementById('keyword').value;
+    const loc = document.getElementById('location').value;
+    fetchJobs(kw, loc);
+  });
+
+  // Enter key in inputs
+  ['keyword', 'location'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') document.getElementById('searchBtn').click();
+    });
+  });
+
+  // Filter tags
+  document.getElementById('filterTags').addEventListener('click', (e) => {
+    const tag = e.target.closest('.tag');
+    if (!tag) return;
+    document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+    tag.classList.add('active');
+    activeTag = tag.dataset.tag;
+    renderJobs(filterAndSort(allJobs));
+  });
+
+  // Sort
+  document.getElementById('sortSelect').addEventListener('change', () => {
+    renderJobs(filterAndSort(allJobs));
+  });
+}
+
+async function fetchJobs(keyword = '', location = '') {
+  renderSkeletons();
+  const url = `/api/get-jobs?what=${encodeURIComponent(keyword)}&where=${encodeURIComponent(location)}`;
+  try {
+    const res  = await fetch(url);
+    const data = await res.json();
+    allJobs = (data.results || []).map(job => {
+      let salary = 'Undisclosed';
+      if (job.salary_min && job.salary_max)
+        salary = `$${Math.round(job.salary_min/1000)}k – $${Math.round(job.salary_max/1000)}k`;
+      else if (job.salary_min)
+        salary = `$${Math.round(job.salary_min/1000)}k+`;
+      return {
+        title:    job.title,
+        company:  job.company,
+        loc:      job.location || 'Remote',
+        salary,
+        url:      job.redirect_url,
+        category: job.category || '',
+        postedAt: new Date(job.posted_at),
+        salaryRaw: job.salary_max || job.salary_min || 0,
+      };
+    });
+    renderJobs(filterAndSort(allJobs));
+  } catch (err) {
+    console.error(err);
+    document.getElementById('jobsList').innerHTML = `
+      <div class="state-empty">
+        <div class="state-icon">⚠️</div>
+        <h3>Something went wrong</h3>
+        <p>Could not load jobs. Please try again later.</p>
+      </div>`;
+    document.getElementById('resultsCount').textContent = '';
+  }
+}
+
+function filterAndSort(jobs) {
+  let list = jobs;
+  if (activeTag) {
+    list = list.filter(j =>
+      j.loc.toLowerCase().includes(activeTag.toLowerCase()) ||
+      j.category.toLowerCase().includes(activeTag.toLowerCase()) ||
+      j.title.toLowerCase().includes(activeTag.toLowerCase())
+    );
+  }
+  const sort = document.getElementById('sortSelect').value;
+  if (sort === 'salary')  list = [...list].sort((a,b) => b.salaryRaw - a.salaryRaw);
+  if (sort === 'company') list = [...list].sort((a,b) => a.company.localeCompare(b.company));
+  if (sort === 'date')    list = [...list].sort((a,b) => b.postedAt - a.postedAt);
+  return list;
+}
+
+function renderJobs(jobs) {
+  const container = document.getElementById('jobsList');
+  const count     = document.getElementById('resultsCount');
+
+  if (jobs.length === 0) {
+    container.innerHTML = `
+      <div class="state-empty">
+        <div class="state-icon">🔍</div>
+        <h3>No jobs found</h3>
+        <p>Try a different keyword or clear the filters.</p>
+      </div>`;
+    count.innerHTML = 'No results';
+    return;
+  }
+
+  count.innerHTML = `Showing <strong>${jobs.length}</strong> opportunit${jobs.length === 1 ? 'y' : 'ies'}`;
+
+  container.innerHTML = jobs.map((job, i) => `
+    <div class="job-item" style="animation-delay:${i * 0.04}s" onclick="window.open('${escHtml(job.url)}','_blank')">
+      <div class="job-main">
+        <div class="company-logo">${escHtml(job.company[0])}</div>
+        <div class="job-info">
+          <div class="company-name">${escHtml(job.company)}</div>
+          <div class="job-title">${escHtml(job.title)}</div>
+          <div class="job-pills">
+            <span class="pill pill-loc">📍 ${escHtml(job.loc)}</span>
+            <span class="pill pill-sal">💰 ${escHtml(job.salary)}</span>
+            ${job.category ? `<span class="pill pill-cat">${escHtml(job.category)}</span>` : ''}
+          </div>
+        </div>
+      </div>
+      <div class="job-right">
+        <span class="job-time">${timeAgo(job.postedAt)}</span>
+        <button class="apply-btn" onclick="event.stopPropagation();window.open('${escHtml(job.url)}','_blank')">Apply →</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderSkeletons() {
+  const container = document.getElementById('jobsList');
+  document.getElementById('resultsCount').textContent = 'Loading…';
+  container.innerHTML = Array(6).fill(0).map(() => `
+    <div class="skeleton-job">
+      <div class="skeleton" style="width:46px;height:46px;border-radius:10px;flex-shrink:0"></div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
+        <div class="skeleton" style="height:12px;width:100px;"></div>
+        <div class="skeleton" style="height:16px;width:260px;"></div>
+        <div style="display:flex;gap:8px;">
+          <div class="skeleton" style="height:20px;width:80px;border-radius:5px;"></div>
+          <div class="skeleton" style="height:20px;width:80px;border-radius:5px;"></div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function timeAgo(date) {
+  const s = Math.floor((Date.now() - date) / 1000);
+  if (s < 3600)   return 'Today';
+  if (s < 86400)  return Math.floor(s/3600)  + 'h ago';
+  if (s < 604800) return Math.floor(s/86400) + 'd ago';
+  if (s < 2592000)return Math.floor(s/604800)+ 'w ago';
+  return Math.floor(s/2592000) + 'mo ago';
+}
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>

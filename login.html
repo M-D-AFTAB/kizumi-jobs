@@ -1,189 +1,229 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-<meta charset="UTF-8">
-<title>Kizumi Ultra Login</title>
-
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
-
-body {
-  height: 100vh;
-  overflow: hidden;
-  background: #021814;
-}
-
-/* 🌊 MOVING GRADIENT BACKGROUND */
-.bg {
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    45deg,
-    #00ffcc,
-    #004d3d,
-    #00cc99,
-    #002d24
-  );
-  animation: moveBg 10s linear infinite;
-  filter: blur(80px);
-  opacity: 0.6;
-}
-
-@keyframes moveBg {
-  0% { transform: translate(0,0); }
-  50% { transform: translate(-25%, -25%); }
-  100% { transform: translate(0,0); }
-}
-
-/* ✨ FLOATING DOTS */
-.dots {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-image: radial-gradient(#00ffcc 1px, transparent 1px);
-  background-size: 30px 30px;
-  opacity: 0.15;
-}
-
-/* 💎 LOGIN CARD */
-.login-box {
-  position: relative;
-  z-index: 2;
-  width: 340px;
-  padding: 35px;
-  margin: auto;
-  top: 50%;
-  transform: translateY(-50%);
-  border-radius: 20px;
-  backdrop-filter: blur(20px);
-  background: rgba(0, 30, 25, 0.6);
-  text-align: center;
-  overflow: hidden;
-}
-
-/* 🔥 ANIMATED BORDER */
-.login-box::before {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: 20px;
-  background: linear-gradient(45deg, #00ffcc, transparent, #00ffcc);
-  animation: rotate 4s linear infinite;
-  z-index: -1;
-}
-
-@keyframes rotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Inner content fix */
-.login-box::after {
-  content: "";
-  position: absolute;
-  inset: 2px;
-  background: rgba(0, 30, 25, 0.9);
-  border-radius: 18px;
-  z-index: -1;
-}
-
-/* Title */
-.login-box h2 {
-  color: #00ffcc;
-  margin-bottom: 20px;
-  text-shadow: 0 0 10px #00ffcc;
-}
-
-/* Inputs */
-.login-box input {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 10px;
-  border: none;
-  background: rgba(0,0,0,0.4);
-  color: white;
-  outline: none;
-  transition: 0.3s;
-}
-
-.login-box input:focus {
-  box-shadow: 0 0 12px #00ffcc;
-}
-
-/* Button */
-.login-box button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 15px;
-  border-radius: 10px;
-  border: none;
-  background: linear-gradient(45deg, #00ffcc, #00cc99);
-  color: black;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.login-box button:hover {
-  transform: scale(1.07);
-  box-shadow: 0 0 20px #00ffcc;
-}
-
-/* 🖱️ CURSOR SPARKLE */
-.sparkle {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: #00ffcc;
-  border-radius: 50%;
-  pointer-events: none;
-  animation: fade 0.8s linear forwards;
-}
-
-@keyframes fade {
-  to {
-    opacity: 0;
-    transform: scale(2);
-  }
-}
-</style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log In — Kizumi Jobs</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>⚡</text></svg>">
 </head>
+<body class="auth-body">
 
-<body>
+<!-- ── NAVBAR ── -->
+<nav class="navbar">
+  <a href="index.html" class="logo">kizumi<span>jobs</span></a>
+  <div class="nav-links">
+    <a href="about.html" class="nav-link-hide">About</a>
+    <a href="signup.html">Create account</a>
+    <button class="theme-toggle" id="themeBtn" title="Toggle theme">☀️</button>
+  </div>
+</nav>
 
-<div class="bg"></div>
-<div class="dots"></div>
+<!-- ── AUTH MAIN ── -->
+<main class="auth-main">
+  <div class="auth-card">
 
-<div class="login-box">
-  <h2>Kizumi Login</h2>
+    <!-- Brand -->
+    <div class="auth-brand">
+      <span class="logo">kizumi<span>jobs</span></span>
+      <p>Your creative career dashboard</p>
+    </div>
 
-  <input type="text" placeholder="Username">
-  <input type="email" placeholder="Email">
-  <input type="password" placeholder="Password">
-  <input type="password" placeholder="Confirm Password">
+    <h1 class="auth-title">Welcome back</h1>
+    <p class="auth-subtitle">Log in to access your job feed</p>
 
-  <button>Signup Now</button>
+    <!-- Toast -->
+    <div class="auth-toast" id="toast"></div>
+
+    <!-- Form -->
+    <form id="loginForm" novalidate>
+
+      <div class="field" id="field-email">
+        <label for="email">Email address</label>
+        <div class="field-input">
+          <span class="icon">✉️</span>
+          <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
+        </div>
+        <div class="field-error" id="err-email">Please enter a valid email.</div>
+      </div>
+
+      <div class="field" id="field-password">
+        <label for="password">Password</label>
+        <div class="field-input">
+          <span class="icon">🔒</span>
+          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required>
+          <button type="button" class="toggle-pw" id="togglePw" aria-label="Show password">👁</button>
+        </div>
+        <div class="field-error" id="err-password">Please enter your password.</div>
+      </div>
+
+      <a href="#" class="forgot-link" id="forgotLink">Forgot password?</a>
+
+      <button type="submit" class="auth-btn" id="loginBtn">
+        <span class="btn-text">Log in</span>
+        <div class="btn-loader"></div>
+      </button>
+    </form>
+
+    <!-- Divider -->
+    <div class="auth-divider">or continue with</div>
+
+    <!-- Google -->
+    <button class="google-btn" id="googleBtn">
+      <svg viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+      </svg>
+      Continue with Google
+    </button>
+
+    <!-- Footer -->
+    <div class="auth-footer">
+      Don't have an account? <a href="signup.html">Sign up free</a>
+    </div>
+
+  </div>
+</main>
+
+<!-- ── FORGOT PASSWORD MODAL ── -->
+<div class="modal-overlay" id="forgotModal">
+  <div class="modal">
+    <button class="modal-close" id="modalClose">×</button>
+    <h2 class="modal-title">Reset password</h2>
+    <p class="modal-desc">Enter your email and we'll send you a reset link.</p>
+    <div class="auth-toast" id="resetToast"></div>
+    <div class="field" id="field-reset-email">
+      <label for="resetEmail">Email address</label>
+      <div class="field-input">
+        <span class="icon">✉️</span>
+        <input type="email" id="resetEmail" placeholder="you@example.com">
+      </div>
+    </div>
+    <button class="auth-btn" id="resetBtn" style="margin-top:8px">
+      <span class="btn-text">Send reset link</span>
+      <div class="btn-loader"></div>
+    </button>
+  </div>
 </div>
 
-<script>
-document.addEventListener("mousemove", function(e){
-  let s = document.createElement("span");
-  s.classList.add("sparkle");
-  s.style.left = e.clientX + "px";
-  s.style.top = e.clientY + "px";
-  document.body.appendChild(s);
+<script type="module">
+import {
+  auth,
+  initTheme, toggleTheme, updateThemeIcon,
+  redirectIfAuthed,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  signInWithGoogle
+} from './auth.js';
 
-  setTimeout(()=>{ s.remove(); }, 800);
+// ── Theme
+initTheme();
+updateThemeIcon();
+document.getElementById('themeBtn').onclick = () => { toggleTheme(); updateThemeIcon(); };
+
+// ── Redirect if already authed
+redirectIfAuthed('dashboard.html');
+
+// ── Helpers
+const toast   = document.getElementById('toast');
+const loginBtn= document.getElementById('loginBtn');
+
+function showToast(el, msg, type = 'error') {
+  el.className = `auth-toast ${type} show`;
+  el.textContent = (type === 'error' ? '⚠️ ' : '✅ ') + msg;
+}
+
+function setLoading(btn, on) {
+  btn.disabled = on;
+  btn.classList.toggle('loading', on);
+}
+
+function validate() {
+  let ok = true;
+  const email = document.getElementById('email').value.trim();
+  const pw    = document.getElementById('password').value;
+
+  document.getElementById('field-email').classList.toggle('has-error', !email || !/\S+@\S+\.\S+/.test(email));
+  document.getElementById('field-password').classList.toggle('has-error', !pw);
+  if (!email || !/\S+@\S+\.\S+/.test(email)) ok = false;
+  if (!pw) ok = false;
+  return ok;
+}
+
+// ── Login form
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!validate()) return;
+  setLoading(loginBtn, true);
+  toast.classList.remove('show');
+
+  try {
+    await signInWithEmailAndPassword(
+      auth,
+      document.getElementById('email').value.trim(),
+      document.getElementById('password').value
+    );
+    window.location.replace('dashboard.html');
+  } catch (err) {
+    const msgs = {
+      'auth/user-not-found':  'No account found with this email.',
+      'auth/wrong-password':  'Incorrect password. Try again.',
+      'auth/invalid-email':   'Invalid email address.',
+      'auth/too-many-requests':'Too many attempts. Try again later.',
+      'auth/invalid-credential': 'Invalid email or password.',
+    };
+    showToast(toast, msgs[err.code] || 'Login failed. Please try again.');
+  } finally {
+    setLoading(loginBtn, false);
+  }
+});
+
+// ── Google login
+document.getElementById('googleBtn').addEventListener('click', async () => {
+  try {
+    await signInWithGoogle();
+    window.location.replace('dashboard.html');
+  } catch (err) {
+    showToast(toast, 'Google sign-in failed. Try again.');
+  }
+});
+
+// ── Password visibility toggle
+document.getElementById('togglePw').addEventListener('click', () => {
+  const pw = document.getElementById('password');
+  const btn = document.getElementById('togglePw');
+  if (pw.type === 'password') { pw.type = 'text'; btn.textContent = '🙈'; }
+  else { pw.type = 'password'; btn.textContent = '👁'; }
+});
+
+// ── Forgot password modal
+const modal     = document.getElementById('forgotModal');
+const resetBtn  = document.getElementById('resetBtn');
+const resetToast= document.getElementById('resetToast');
+
+document.getElementById('forgotLink').addEventListener('click', (e) => {
+  e.preventDefault();
+  modal.classList.add('open');
+});
+document.getElementById('modalClose').addEventListener('click', () => modal.classList.remove('open'));
+modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
+
+resetBtn.addEventListener('click', async () => {
+  const email = document.getElementById('resetEmail').value.trim();
+  if (!email) { showToast(resetToast, 'Please enter your email.'); return; }
+  setLoading(resetBtn, true);
+  try {
+    await sendPasswordResetEmail(auth, email);
+    showToast(resetToast, 'Reset link sent! Check your inbox.', 'success');
+    document.getElementById('resetEmail').value = '';
+  } catch (err) {
+    showToast(resetToast, 'Could not send reset email. Check the address.');
+  } finally {
+    setLoading(resetBtn, false);
+  }
 });
 </script>
-
 </body>
 </html>

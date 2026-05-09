@@ -1,7 +1,16 @@
 {
   "name": "kizumi-jobs",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "description": "Creative & technical job board with Firebase auth and Supabase backend",
+  "type": "module",
   "dependencies": {
     "@supabase/supabase-js": "^2.43.0"
+  },
+  "devDependencies": {
+    "vercel": "latest"
+  },
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
   }
 }

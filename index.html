@@ -1,56 +1,143 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kizumi Jobs | Creative Career Search</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kizumi Jobs — Find Your Next Creative Role</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>⚡</text></svg>">
 </head>
 <body>
-    <header class="header-section">
-        <nav class="navbar">
-            <div class="logo">kizumi<span>jobs</span></div>
-            <div class="nav-links">
-                <a href="#">About</a>
-                <a href="#">Search Jobs</a>
-            </div>
-        </nav>
 
-        <div class="hero">
-            <h1>Find your next role with<br><span>Creative-powered search</span></h1>
-            <p class="stats">Discover your next opportunity in tech and design.</p>
-            
-            <div class="search-container">
-                <div class="search-box">
-                    <div class="input-group main-input">
-                        <span class="icon">🔍</span>
-                        <input type="text" id="keyword" placeholder="Job title or keywords...">
-                    </div>
-                    <div class="divider"></div>
-                    <div class="input-group loc-input">
-                        <span class="icon">📍</span>
-                        <input type="text" id="location" placeholder="Location">
-                    </div>
-                    <button class="search-btn">Search</button>
-                </div>
-                <div class="tags">
-                    <span class="tag">Remote</span>
-                    <span class="tag">Backend</span>
-                    <span class="tag">Frontend</span>
-                    <span class="tag">Data</span>
-                    <span class="tag">Design</span>
-                </div>
-            </div>
-        </div>
-    </header>
+<!-- ── NAVBAR ── -->
+<nav class="navbar">
+  <a href="index.html" class="logo">kizumi<span>jobs</span></a>
+  <div class="nav-links">
+    <a href="about.html" class="nav-link-hide">About</a>
+    <a href="login.html">Log in</a>
+    <a href="signup.html" class="nav-btn">Get Started</a>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">☀️</button>
+  </div>
+</nav>
 
-    <main class="content">
-        <div id="jobsList" class="jobs-list">
-            <p style="text-align: center; color: #718096;">Loading latest opportunities...</p>
-        </div>
-    </main>
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-blob blob-1"></div>
+    <div class="hero-blob blob-2"></div>
+    <div class="hero-blob blob-3"></div>
+  </div>
 
-    <script src="script.js"></script>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span>⚡</span> Real-time job aggregation, zero noise
+    </div>
+
+    <h1>
+      Find your next<br>
+      <em>creative</em> &amp; <span class="lime">technical</span><br>
+      role faster
+    </h1>
+
+    <p class="hero-desc">
+      Kizumi Jobs aggregates the freshest opportunities from vetted sources —
+      tech stacks, salaries, and remote status front and center.
+      No spam, no clutter.
+    </p>
+
+    <div class="hero-cta">
+      <a href="signup.html" class="cta-primary">Start for free →</a>
+      <a href="login.html" class="cta-secondary">I have an account</a>
+    </div>
+
+    <div class="stats-strip">
+      <div class="stat-item">
+        <span class="stat-num">50<em>+</em></span>
+        <div class="stat-label">New jobs daily</div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">5<em>+</em></span>
+        <div class="stat-label">Job categories</div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">100<em>%</em></span>
+        <div class="stat-label">Free to use</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ── -->
+<section class="features" id="features">
+  <div style="text-align:center; max-width:580px; margin:0 auto;">
+    <div class="section-label">Why Kizumi</div>
+    <h2 class="section-title">Everything you need,<br>nothing you don't</h2>
+    <p class="section-desc">We obsessed over the job-search experience so you don't have to.</p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🔍</div>
+      <h3>Unified Search</h3>
+      <p>One search bar across all categories. Filter by title, location, tech stack, or salary — results update instantly.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Real-time Sync</h3>
+      <p>Our engine syncs new listings every day at 5 AM, auto-removes stale ones after 30 days. Always fresh.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💰</div>
+      <h3>Salary Transparency</h3>
+      <p>Salary ranges shown upfront on every card. No more clicking through to discover the pay doesn't match.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌍</div>
+      <h3>Remote-first</h3>
+      <p>Filter to remote-only in one click. We surface location info clearly so you know before you apply.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🏷️</div>
+      <h3>Category Pills</h3>
+      <p>Quick-filter pills for Backend, Frontend, Design, Data, and Remote. Find your niche in seconds.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌗</div>
+      <h3>Dark &amp; Light Mode</h3>
+      <p>Your eyes, your rules. A polished theme toggle persists across every page on every visit.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA BANNER ── -->
+<div class="cta-banner" style="max-width:1100px; margin:0 auto 100px;">
+  <h2>Ready to find your<br><em style="font-style:normal;color:var(--accent)">next opportunity?</em></h2>
+  <p>Join Kizumi Jobs — it's completely free, forever.</p>
+  <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+    <a href="signup.html" class="cta-primary">Create free account →</a>
+    <a href="about.html" class="cta-secondary">Learn more</a>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <a href="index.html" class="logo" style="font-size:18px;">kizumi<span>jobs</span></a>
+  <div class="footer-links">
+    <a href="about.html">About</a>
+    <a href="login.html">Login</a>
+    <a href="signup.html">Sign Up</a>
+  </div>
+  <p>© 2026 Kizumi Jobs · MIT License</p>
+</footer>
+
+<script type="module">
+  import { initTheme, toggleTheme, updateThemeIcon, redirectIfAuthed } from './auth.js';
+  initTheme();
+  updateThemeIcon();
+  // Expose toggleTheme globally for onclick
+  window.toggleTheme = toggleTheme;
+  // If already logged in, go to dashboard
+  redirectIfAuthed('dashboard.html');
+</script>
 </body>
 </html>
