@@ -8,16 +8,13 @@ export default async function handler(req, res) {
     const { what } = req.query;
     console.log("Searching for:", what);
 
-    // 2. Simple query: No filters, no complex sorting yet
-    // We use .from('jobs') - make sure this matches your table name exactly
     let request = supabase.from('jobs').select('*');
 
-    // Only filter if 'what' exists
     if (what && what.trim() !== "") {
        request = request.ilike('title', `%${what.trim()}%`);
     }
 
-    const { data, error } = await request.limit(20);
+    const { data, error } = await request.limit(40).order('posted_at', { ascending: false });
 
     if (error) {
       console.error("Supabase API Error:", error);
