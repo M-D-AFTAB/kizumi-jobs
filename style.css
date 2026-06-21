@@ -1,68 +1,66 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&display=swap');
 
 /* ═══════════════════════════════════════
    DESIGN TOKENS
 ═══════════════════════════════════════ */
 :root {
-  --bg:           #0a1a14;
-  --bg-2:         #0f2318;
-  --bg-3:         #142d1f;
-  --surface:      rgba(255,255,255,0.04);
-  --surface-2:    rgba(255,255,255,0.07);
-  --border:       rgba(255,255,255,0.08);
-  --border-2:     rgba(0,255,170,0.2);
+  --bg: #ffffff;
+  --bg-2: #f4f4f4;
+  --bg-3: #eaeaea;
+  --surface: rgba(0,0,0,0.04);
+  --surface-2: rgba(0,0,0,0.07);
+  --border: rgba(0,0,0,0.1);
+  --border-2: rgba(0,51,102,0.3);
 
-  --accent:       #00ffaa;
-  --accent-dim:   #00cc88;
-  --accent-glow:  rgba(0,255,170,0.15);
-  --lime:         #bfff4f;
-  --lime-dim:     #a8e03f;
+  --accent: #003366;
+  --accent-dim: #002244;
+  --accent-glow: rgba(0,51,102,0.1);
+  --lime: #f5a623;
+  --lime-dim: #e09510;
 
-  --text:         #e8f5ef;
-  --text-2:       #8aab99;
-  --text-3:       #567065;
+  --text: #1a1a1a;
+  --text-2: #4a4a4a;
+  --text-3: #888888;
 
-  --danger:       #ff4d6d;
-  --warning:      #ffb347;
-  --success:      #00ffaa;
+  --danger: #cc0000;
+  --warning: #f5a623;
+  --success: #007a33;
 
-  --radius:       14px;
-  --radius-sm:    8px;
-  --radius-lg:    20px;
-  --shadow:       0 8px 32px rgba(0,0,0,0.4);
-  --shadow-glow:  0 0 40px rgba(0,255,170,0.08);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --radius-lg: 20px;
+  --shadow: 0 8px 32px rgba(0,0,0,0.12);
+  --shadow-glow: 0 0 40px rgba(0,51,102,0.08);
 
-  --font-display: 'Syne', sans-serif;
-  --font-body:    'DM Sans', sans-serif;
+  --font-display: 'Roboto', sans-serif;
+  --font-body: 'Open Sans', sans-serif;
 
-  --transition:   0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Mobile nav height — used for offset calculations */
   --nav-h: 63px;
 }
 
-/* Light mode */
-[data-theme="light"] {
-  --bg:           #f0faf5;
-  --bg-2:         #e4f5ec;
-  --bg-3:         #d6ede0;
-  --surface:      rgba(0,0,0,0.04);
-  --surface-2:    rgba(0,0,0,0.07);
-  --border:       rgba(0,0,0,0.1);
-  --border-2:     rgba(4,120,87,0.3);
+/* Dark mode (optional override) */
+[data-theme="dark"] {
+  --bg: #0a1a2e;
+  --bg-2: #0f2040;
+  --bg-3: #142a52;
+  --surface: rgba(255,255,255,0.04);
+  --surface-2: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.08);
+  --border-2: rgba(245,166,35,0.3);
 
-  --accent:       #047857;
-  --accent-dim:   #065f46;
-  --accent-glow:  rgba(4,120,87,0.1);
-  --lime:         #3d8c00;
-  --lime-dim:     #2e6a00;
+  --accent: #f5a623;
+  --accent-dim: #e09510;
+  --accent-glow: rgba(245,166,35,0.15);
 
-  --text:         #0d2b1e;
-  --text-2:       #3a5c4a;
-  --text-3:       #7a9e8a;
+  --text: #f0f4f8;
+  --text-2: #a0b0c0;
+  --text-3: #607080;
 
-  --shadow:       0 8px 32px rgba(0,0,0,0.12);
-  --shadow-glow:  0 0 40px rgba(4,120,87,0.06);
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  --shadow-glow: 0 0 40px rgba(245,166,35,0.08);
 }
 
 /* ═══════════════════════════════════════
@@ -213,7 +211,7 @@ input, textarea { font-family: var(--font-body); }
 }
 @keyframes drawerIn {
   from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(0); }
 }
 .nav-drawer.open { display: flex; }
 .nav-drawer a, .nav-drawer .nav-drawer-btn {
@@ -301,7 +299,7 @@ input, textarea { font-family: var(--font-body); }
 
 @keyframes cardIn {
   from { opacity: 0; transform: translateY(24px) scale(0.96); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .auth-brand {
@@ -509,9 +507,9 @@ input, textarea { font-family: var(--font-body); }
   align-items: center;
   gap: 10px;
 }
-.auth-toast.error   { background: rgba(255,77,109,0.12); border: 1px solid rgba(255,77,109,0.3); color: #ff8fa3; }
-.auth-toast.success { background: rgba(0,255,170,0.1);   border: 1px solid rgba(0,255,170,0.2);   color: var(--accent); }
-.auth-toast.show    { display: flex; }
+.auth-toast.error { background: rgba(255,77,109,0.12); border: 1px solid rgba(255,77,109,0.3); color: #ff8fa3; }
+.auth-toast.success { background: rgba(0,255,170,0.1); border: 1px solid rgba(0,255,170,0.2); color: var(--accent); }
+.auth-toast.show { display: flex; }
 
 /* ═══════════════════════════════════════
    FORGOT PASSWORD MODAL
@@ -729,7 +727,7 @@ input, textarea { font-family: var(--font-body); }
 
 @keyframes jobIn {
   from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .job-main { display: flex; align-items: center; gap: 14px; min-width: 0; flex: 1; }
@@ -772,12 +770,12 @@ input, textarea { font-family: var(--font-body); }
   font-weight: 600;
   letter-spacing: 0.2px;
 }
-.pill-loc  { background: rgba(0,255,170,0.1);  color: var(--accent); }
-.pill-sal  { background: rgba(191,255,79,0.1);  color: var(--lime); }
-.pill-cat  { background: var(--surface-2); color: var(--text-2); }
+.pill-loc { background: rgba(0,255,170,0.1); color: var(--accent); }
+.pill-sal { background: rgba(191,255,79,0.1); color: var(--lime); }
+.pill-cat { background: var(--surface-2); color: var(--text-2); }
 
 .job-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; flex-shrink: 0; }
-.job-time  { font-size: 11px; color: var(--text-3); }
+.job-time { font-size: 11px; color: var(--text-3); }
 .apply-btn {
   padding: 8px 18px;
   background: var(--surface);
@@ -866,7 +864,7 @@ input, textarea { font-family: var(--font-body); }
   margin-bottom: 8px;
 }
 .ud-info .ud-email { font-size: 12px; color: var(--text-3); }
-.ud-info .ud-name  { font-size: 14px; font-weight: 600; color: var(--text); }
+.ud-info .ud-name { font-size: 14px; font-weight: 600; color: var(--text); }
 
 .user-dropdown a, .user-dropdown button {
   display: flex;
@@ -1020,7 +1018,7 @@ input, textarea { font-family: var(--font-body); }
 
 @keyframes fadeUp {
   from { opacity:0; transform: translateY(20px); }
-  to   { opacity:1; transform: translateY(0); }
+  to { opacity:1; transform: translateY(0); }
 }
 
 /* Stats strip */
