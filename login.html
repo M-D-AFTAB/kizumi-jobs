@@ -127,7 +127,8 @@ import {
   redirectIfAuthed,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
-  signInWithGoogle
+  signInWithGoogle,
+  sendEmailVerification
 } from './auth.js';
 
 // ── Theme
@@ -206,11 +207,20 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   toast.classList.remove('show');
 
   try {
-    await signInWithEmailAndPassword(
+    const cred = await signInWithEmailAndPassword(
       auth,
       email,
       document.getElementById('password').value
     );
+    const user = cred.user;
+
+    if (!user.emailVerified) {
+      await sendEmailVerification(user);
+      await auth.signOut();
+      showToast(toast, 'Your email is not verified. We have sent a new verification link to your inbox.');
+      return;
+    }
+
     window.location.replace('dashboard.html');
   } catch (err) {
     const msgs = {

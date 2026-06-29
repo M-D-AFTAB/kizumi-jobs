@@ -131,7 +131,8 @@ import {
   redirectIfAuthed,
   createUserWithEmailAndPassword,
   updateProfile,
-  signInWithGoogle
+  signInWithGoogle,
+  sendEmailVerification
 } from './auth.js';
 
 // ── Theme
@@ -253,7 +254,12 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
   try {
     const { user } = await createUserWithEmailAndPassword(auth, email, pw);
     await updateProfile(user, { displayName: name });
-    window.location.replace('dashboard.html');
+    
+    await sendEmailVerification(user);
+    await auth.signOut();
+    
+    showToast('Verification email sent! Check your @sjcem.edu.in inbox to verify your account before logging in.', 'success');
+    document.getElementById('signupForm').reset();
   } catch (err) {
     const msgs = {
       'auth/email-already-in-use': 'An account with this email already exists.',
