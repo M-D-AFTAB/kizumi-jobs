@@ -151,7 +151,7 @@ document.addEventListener('click', (e) => {
 
 // ── Guard: require authentication before showing anything
 requireAuth((user) => {
-  if (!user.email || !user.email.toLowerCase().endsWith('@sjcem.edu.in')) {
+  if (!user.email || !user.email.toLowerCase().endsWith('@sjcem.edu.in') || !user.emailVerified) {
     logout();
     return;
   }

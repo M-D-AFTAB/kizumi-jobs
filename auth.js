@@ -13,7 +13,8 @@ import {
   sendPasswordResetEmail,
   updateProfile,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
+  sendEmailVerification
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 // ── Firebase config ──────────────────────────────────────
@@ -22,7 +23,7 @@ import {
 // See SETUP.md for instructions.
 const firebaseConfig = {
   apiKey:            window.__ENV__?.FIREBASE_API_KEY            || "AIzaSyAe7x5VyFDTHSsNPq6HhYb3z-NZt-5-4FI",
-  authDomain:        window.__ENV__?.FIREBASE_AUTH_DOMAIN        || "kizumi-jobs.firebaseapp.com.firebaseapp.com",
+  authDomain:        window.__ENV__?.FIREBASE_AUTH_DOMAIN        || "kizumi-jobs.firebaseapp.com",
   projectId:         window.__ENV__?.FIREBASE_PROJECT_ID         || "kizumi-jobs",
   storageBucket:     window.__ENV__?.FIREBASE_STORAGE_BUCKET     || "kizumi-jobs.firebasestorage.app",
   messagingSenderId: window.__ENV__?.FIREBASE_MESSAGING_SENDER_ID|| "342400140339",
@@ -107,5 +108,6 @@ export {
   initTheme,
   toggleTheme,
   updateThemeIcon,
-  applyTheme
+  applyTheme,
+  sendEmailVerification
 };
