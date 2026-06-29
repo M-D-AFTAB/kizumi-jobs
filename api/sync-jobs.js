@@ -1,9 +1,4 @@
-import { createClient } from '@supabase/supabase-js'
-
-const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY
-)
+import { runSync } from './_sync-helper.js'
 
 export default async function handler(req, res) {
 
@@ -12,40 +7,9 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    const adzunaUrl = `https://api.adzuna.com/v1/api/jobs/in/search/1?app_id=${process.env.ADZUNA_APP_ID}&app_key=${process.env.ADZUNA_APP_KEY}&results_per_page=50&sort_by=date&content-type=application/json`;
-
     try {
-        const response = await fetch(adzunaUrl);
-        const data = await response.json();
-        const adzunaJobs = data.results;
-
-        const jobsToUpload = adzunaJobs.map(job => ({
-            job_id:     job.id,
-            title:      job.title,
-            company:    job.company.display_name,
-            location:   job.location.display_name,
-            salary_min: job.salary_min,
-            salary_max: job.salary_max,
-            redirect_url: job.redirect_url,
-            category:   job.category.label,
-            posted_at:  job.created
-        }));
-
-        const { error } = await supabase
-            .from('jobs')
-            .upsert(jobsToUpload, { onConflict: 'job_id' });
-
-        if (error) throw error;
-
-        const thirtyDaysAgo = new Date();
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-        await supabase
-            .from('jobs')
-            .delete()
-            .lt('posted_at', thirtyDaysAgo.toISOString());
-
-        res.status(200).json({ message: `Successfully synced ${jobsToUpload.length} jobs.` });
+        const result = await runSync();
+        res.status(200).json({ message: 'Sync completed successfully', result });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

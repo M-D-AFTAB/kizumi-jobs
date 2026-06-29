@@ -22,10 +22,23 @@ async function updateJobFeed(keyword = '', location = '') {
         const formattedJobs = jobs.map(job => {
             // Logic to format Salary nicely
             let salaryText = 'Salary Undisclosed';
-            if (job.salary_min && job.salary_max) {
-                salaryText = `USD ${Math.round(job.salary_min / 1000)}k - ${Math.round(job.salary_max / 1000)}k`;
-            } else if (job.salary_min) {
-                salaryText = `USD ${Math.round(job.salary_min / 1000)}k+`;
+            const isMonthly = (job.salary_min && job.salary_min < 50000) || (job.salary_max && job.salary_max < 50000);
+            
+            if (isMonthly) {
+                if (job.salary_min && job.salary_max) {
+                    salaryText = `₹${Math.round(job.salary_min / 1000)}k - ₹${Math.round(job.salary_max / 1000)}k/mo`;
+                } else if (job.salary_min) {
+                    salaryText = `₹${Math.round(job.salary_min / 1000)}k+/mo`;
+                }
+            } else {
+                if (job.salary_min && job.salary_max) {
+                    const minLakh = (job.salary_min / 100000).toFixed(1).replace(/\.0$/, '');
+                    const maxLakh = (job.salary_max / 100000).toFixed(1).replace(/\.0$/, '');
+                    salaryText = `₹${minLakh} - ₹${maxLakh} LPA`;
+                } else if (job.salary_min) {
+                    const minLakh = (job.salary_min / 100000).toFixed(1).replace(/\.0$/, '');
+                    salaryText = `₹${minLakh} LPA+`;
+                }
             }
 
             return {
