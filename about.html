@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About — Kizumi Jobs</title>
+  <title>About — SJCEM Jobs Portal</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>⚡</text></svg>">
@@ -14,7 +14,7 @@
 
   <!-- ── NAVBAR ── -->
   <nav class="navbar">
-    <a href="index.html" class="logo">kizumi<span>jobs</span></a>
+    <a href="index.html" class="logo">SJCEM<span>Jobs</span></a>
     <div class="nav-links">
       <a href="about.html" class="active">About</a>
       <a href="login.html">Log in</a>
@@ -39,14 +39,13 @@
   <!-- ── ABOUT HERO ── -->
   <section class="about-hero">
     <div class="hero-badge" style="margin:0 auto 24px;display:inline-flex;">
-      ℹ️ &nbsp;About Kizumi Jobs
+      ℹ️ &nbsp;About SJCEM Jobs Portal
     </div>
     <h1 class="section-title" style="font-size:clamp(2rem,5vw,3.5rem);margin-bottom:16px;">
-      Built for people who<br><span style="color:var(--accent)">do creative work</span>
+      Built for SJCEM Students
     </h1>
     <p style="color:var(--text-2);font-size:17px;max-width:560px;margin:0 auto;">
-      Kizumi Jobs strips out the noise of the modern job hunt and puts what matters —
-      the role, the stack, and the salary — front and center.
+      A dedicated portal designed to help engineering students find software and hardware fresher opportunities in Mumbai and Pune.
     </p>
   </section>
 
@@ -56,25 +55,17 @@
     <!-- Story -->
     <div class="about-grid">
       <div class="about-text">
-        <h3>The problem we solve</h3>
+        <h3>Our Purpose</h3>
         <p>
-          Modern job boards are bloated. You search, you filter, you scroll — only to click into a listing
-          that hides the salary, buries the tech stack, and sends you off to yet another application form.
-        </p>
-        <p>
-          Kizumi Jobs aggregates real listings and surfaces the information you actually care about,
-          before you ever click through.
+          Finding entry-level engineering jobs can be challenging due to cluttered platforms and hidden details.
+          SJCEM Jobs Portal aggregates relevant listings to show location, salary, and requirements upfront.
         </p>
       </div>
       <div class="about-text">
         <h3>How it works</h3>
         <p>
-          Our backend syncs with the Adzuna API every morning at 5 AM, pulling the freshest
-          creative and technical roles. Listings older than 30 days are automatically removed.
-        </p>
-        <p>
-          Everything is stored in Supabase and served through a Vercel edge function — so the
-          dashboard loads fast, every time.
+          The portal automatically collects fresh software and hardware engineering job postings for Mumbai and Pune.
+          Stale listings older than 30 days are automatically removed to keep the job feed current.
         </p>
       </div>
     </div>
@@ -83,51 +74,43 @@
     <div class="features-grid" style="margin-top:0;">
       <div class="feature-card">
         <div class="feature-icon">🎯</div>
-        <h3>Focused</h3>
-        <p>No sponsored posts, no recruiter spam. Just real roles from vetted sources.</p>
+        <h3>Relevant</h3>
+        <p>Only contains entry-level technical roles suitable for college freshers.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon">⚡</div>
-        <h3>Fast</h3>
-        <p>Edge-cached API responses. The job feed loads in under 300ms on a good connection.</p>
+        <div class="feature-icon">📍</div>
+        <h3>Local</h3>
+        <p>Focused strictly on opportunities within the Mumbai and Pune regions.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🔒</div>
-        <h3>Private</h3>
-        <p>Firebase Auth means your data stays yours. We don't sell it, period.</p>
-      </div>
-    </div>
-
-    <!-- Tech stack -->
-    <div class="tech-stack">
-      <div class="section-label">Built with</div>
-      <h2 class="section-title" style="font-size:1.8rem;">The tech behind Kizumi</h2>
-      <div class="tech-pills">
-        <div class="tech-pill">Firebase Auth</div>
-        <div class="tech-pill">Supabase (PostgreSQL)</div>
-        <div class="tech-pill">Vercel Edge Functions</div>
-        <div class="tech-pill">Adzuna Jobs API</div>
-        <div class="tech-pill">Vanilla JS (ES Modules)</div>
-        <div class="tech-pill">CSS Custom Properties</div>
-        <div class="tech-pill">Syne + DM Sans</div>
-        <div class="tech-pill">Google Fonts</div>
+        <h3>Verified</h3>
+        <p>Exclusively accessible by students with valid college email addresses.</p>
       </div>
     </div>
 
     <!-- Team -->
     <div class="team-section">
       <div class="section-label" style="margin-top:60px;">The Team</div>
-      <h2 class="section-title" style="font-size:1.8rem;margin-bottom:32px;">Built by three people</h2>
+      <h2 class="section-title" style="font-size:1.8rem;margin-bottom:32px;">Project Team & Mentor</h2>
 
       <div style="display:flex;flex-direction:column;gap:16px;">
+
+        <div class="team-card" style="border:1px solid rgba(191,255,79,0.3);background:rgba(191,255,79,0.03);">
+          <div class="team-avatar" style="background:var(--accent);color:var(--bg);font-weight:bold;">R</div>
+          <div class="team-info">
+            <h3 style="color:var(--accent);">Romero D'Souza</h3>
+            <div class="team-role" style="font-weight:bold;color:var(--text-1);">TPO SJCEM · Project Mentor</div>
+            <p>Supervised the project and aligned requirements with SJCEM TPO guidelines.</p>
+          </div>
+        </div>
 
         <div class="team-card">
           <div class="team-avatar">A</div>
           <div class="team-info">
             <h3>Aftab</h3>
-            <div class="team-role">Co-founder · Backend Engineer</div>
-            <p>Built the data pipeline, Supabase integration, Adzuna sync, and Vercel serverless functions that power
-              the job feed.</p>
+            <div class="team-role">Student · Developer</div>
+            <p>Developed the data aggregation pipeline and backend integration.</p>
           </div>
         </div>
 
@@ -136,9 +119,8 @@
             style="background:rgba(191,255,79,0.1);border-color:rgba(191,255,79,0.3);color:var(--lime);">T</div>
           <div class="team-info">
             <h3>Tanu</h3>
-            <div class="team-role" style="color:var(--lime);">Co-founder · Designer</div>
-            <p>Shaped the visual identity, design system, and the overall aesthetic direction that makes Kizumi feel
-              distinct.</p>
+            <div class="team-role" style="color:var(--lime);">Student · Designer</div>
+            <p>Designed the visual branding and interface aesthetics.</p>
           </div>
         </div>
 
@@ -147,9 +129,8 @@
             style="background:rgba(255,179,71,0.1);border-color:rgba(255,179,71,0.3);color:var(--warning);">S</div>
           <div class="team-info">
             <h3>Sweta</h3>
-            <div class="team-role" style="color:var(--warning);">Co-founder · Designer</div>
-            <p>Crafted the user experience, component layouts, and interaction patterns across every page of the
-              platform.</p>
+            <div class="team-role" style="color:var(--warning);">Student · Designer</div>
+            <p>Created the user experience design and layout structures.</p>
           </div>
         </div>
 
@@ -167,13 +148,13 @@
 
   <!-- ── FOOTER ── -->
   <footer>
-    <a href="index.html" class="logo" style="font-size:18px;">kizumi<span>jobs</span></a>
+    <a href="index.html" class="logo" style="font-size:18px;">SJCEM<span>Jobs</span></a>
     <div class="footer-links">
       <a href="about.html">About</a>
       <a href="login.html">Login</a>
       <a href="signup.html">Sign Up</a>
     </div>
-    <p>© 2026 Kizumi Jobs · MIT License</p>
+    <p>© 2026 SJCEM Jobs Portal · MIT License</p>
   </footer>
 
   <script type="module">
