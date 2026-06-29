@@ -79,10 +79,10 @@
     <div class="filter-tags" id="filterTags">
       <button class="tag active" data-tag="">All</button>
       <button class="tag" data-tag="Remote">Remote</button>
+      <button class="tag" data-tag="Software">Software</button>
+      <button class="tag" data-tag="Hardware">Hardware</button>
       <button class="tag" data-tag="Backend">Backend</button>
       <button class="tag" data-tag="Frontend">Frontend</button>
-      <button class="tag" data-tag="Data">Data</button>
-      <button class="tag" data-tag="Design">Design</button>
     </div>
   </div>
 </header>
@@ -224,10 +224,24 @@ async function fetchJobs(keyword = '', location = '') {
     const data = await res.json();
     allJobs = (data.results || []).map(job => {
       let salary = 'Undisclosed';
-      if (job.salary_min && job.salary_max)
-        salary = `$${Math.round(job.salary_min/1000)}k – $${Math.round(job.salary_max/1000)}k`;
-      else if (job.salary_min)
-        salary = `$${Math.round(job.salary_min/1000)}k+`;
+      const isMonthly = (job.salary_min && job.salary_min < 50000) || (job.salary_max && job.salary_max < 50000);
+      
+      if (isMonthly) {
+        if (job.salary_min && job.salary_max) {
+          salary = `₹${Math.round(job.salary_min / 1000)}k – ₹${Math.round(job.salary_max / 1000)}k/mo`;
+        } else if (job.salary_min) {
+          salary = `₹${Math.round(job.salary_min / 1000)}k+/mo`;
+        }
+      } else {
+        if (job.salary_min && job.salary_max) {
+          const minLakh = (job.salary_min / 100000).toFixed(1).replace(/\.0$/, '');
+          const maxLakh = (job.salary_max / 100000).toFixed(1).replace(/\.0$/, '');
+          salary = `₹${minLakh} – ₹${maxLakh} LPA`;
+        } else if (job.salary_min) {
+          const minLakh = (job.salary_min / 100000).toFixed(1).replace(/\.0$/, '');
+          salary = `₹${minLakh} LPA+`;
+        }
+      }
       return {
         title:    job.title,
         company:  job.company,
