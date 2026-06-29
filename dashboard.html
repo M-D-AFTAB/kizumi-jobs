@@ -151,6 +151,11 @@ document.addEventListener('click', (e) => {
 
 // ── Guard: require authentication before showing anything
 requireAuth((user) => {
+  if (!user.email || !user.email.toLowerCase().endsWith('@sjcem.edu.in')) {
+    logout();
+    return;
+  }
+
   const initial = (user.displayName || user.email || '?')[0].toUpperCase();
 
   // Desktop user menu

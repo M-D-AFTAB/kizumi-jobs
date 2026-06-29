@@ -195,13 +195,20 @@ function validate() {
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   if (!validate()) return;
+
+  const email = document.getElementById('email').value.trim();
+  if (!email.toLowerCase().endsWith('@sjcem.edu.in')) {
+    showToast(toast, 'Only email addresses ending with @sjcem.edu.in are allowed.');
+    return;
+  }
+
   setLoading(loginBtn, true);
   toast.classList.remove('show');
 
   try {
     await signInWithEmailAndPassword(
       auth,
-      document.getElementById('email').value.trim(),
+      email,
       document.getElementById('password').value
     );
     window.location.replace('dashboard.html');
@@ -222,7 +229,15 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 // ── Google login
 document.getElementById('googleBtn').addEventListener('click', async () => {
   try {
-    await signInWithGoogle();
+    const cred = await signInWithGoogle();
+    const user = cred.user;
+
+    if (!user.email || !user.email.toLowerCase().endsWith('@sjcem.edu.in')) {
+      await auth.signOut();
+      showToast(toast, 'Only Google accounts with @sjcem.edu.in emails are allowed.');
+      return;
+    }
+
     window.location.replace('dashboard.html');
   } catch (err) {
     showToast(toast, 'Google sign-in failed. Try again.');

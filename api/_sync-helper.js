@@ -69,8 +69,16 @@ export async function runSync() {
         // Must match tech keywords and not non-tech keywords
         const matchesTech = techKeywords.some(kw => title.includes(kw));
         const matchesNonTech = nonTechKeywords.some(kw => title.includes(kw));
+        if (!matchesTech || matchesNonTech) return false;
 
-        return matchesTech && !matchesNonTech;
+        // Exclude senior/lead/manager/etc. positions to make it fresher-only
+        const seniorKeywords = [
+            'senior', 'lead', 'principal', 'manager', 'director', 'head', 
+            'architect', 'staff', 'vp', 'vice president', 'expert'
+        ];
+        const isSenior = seniorKeywords.some(kw => title.includes(kw)) || title.includes('sr.') || /\bsr\b/.test(title);
+
+        return !isSenior;
     });
 
     const jobsToUpload = filteredJobs.map(job => ({
