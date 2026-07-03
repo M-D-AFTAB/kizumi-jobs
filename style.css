@@ -21,6 +21,7 @@
   --text: #1a1a1a;
   --text-2: #4a4a4a;
   --text-3: #888888;
+  --text-4: #ffffff;
 
   --danger: #cc0000;
   --warning: #f5a623;
@@ -58,6 +59,7 @@
   --text: #f0f4f8;
   --text-2: #a0b0c0;
   --text-3: #607080;
+  --text-4: #000000;
 
   --shadow: 0 8px 32px rgba(0,0,0,0.4);
   --shadow-glow: 0 0 40px rgba(245,166,35,0.08);
@@ -415,7 +417,7 @@ input, textarea { font-family: var(--font-body); }
   width: 100%;
   padding: 14px;
   background: var(--accent);
-  color: #000;
+  color: var(--text-4);
   font-weight: 700;
   font-size: 15px;
   border: none;
@@ -625,7 +627,7 @@ input, textarea { font-family: var(--font-body); }
 .search-divider { width: 1px; height: 26px; background: var(--border); flex-shrink: 0; }
 .search-btn {
   background: var(--accent);
-  color: #000;
+  color: var(--text-4);
   border: none;
   padding: 0 28px;
   font-weight: 700;
@@ -654,7 +656,7 @@ input, textarea { font-family: var(--font-body); }
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  color: var(--text-2);
+  color: var(--text-4);
   transition: all var(--transition);
   background: var(--surface);
   /* Make tags tappable on mobile */
@@ -664,7 +666,7 @@ input, textarea { font-family: var(--font-body); }
 }
 .tag:hover, .tag.active {
   background: var(--accent);
-  color: #000;
+  color: var(--text-4);
   border-color: var(--accent);
 }
 
@@ -982,7 +984,7 @@ input, textarea { font-family: var(--font-body); }
 .cta-primary {
   padding: 16px 36px;
   background: var(--accent);
-  color: #000;
+  color: var(--text-4);
   font-weight: 700;
   font-size: 16px;
   border-radius: var(--radius);
