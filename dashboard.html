@@ -15,7 +15,6 @@
   <a href="index.html" class="logo">SJCEM<span>Jobs</span></a>
   <div class="nav-links">
     <a href="about.html" class="nav-link-hide">About</a>
-    <button class="theme-toggle" id="themeBtn" title="Toggle theme">☀️</button>
     <div class="user-menu" id="userMenu">
       <div class="user-avatar" id="userAvatar" title="Account">?</div>
       <div class="user-dropdown">
@@ -30,7 +29,6 @@
   </div>
   <!-- Mobile controls — user avatar always visible, hamburger for nav -->
   <div style="display:flex;align-items:center;gap:8px;" id="mobileNavControls">
-    <button class="theme-toggle" id="themeBtnMobile" title="Toggle theme" style="display:none;">☀️</button>
     <div class="user-menu" id="userMenuMobile" style="display:none;">
       <div class="user-avatar" id="userAvatarMobile" title="Account">?</div>
       <div class="user-dropdown">
@@ -106,17 +104,8 @@
 import {
   auth,
   requireAuth,
-  logout,
-  initTheme,
-  toggleTheme,
-  updateThemeIcon
+  logout
 } from './auth.js';
-
-// ── Theme
-initTheme();
-updateThemeIcon();
-document.getElementById('themeBtn').onclick = () => { toggleTheme(); updateThemeIcon(); };
-document.getElementById('themeBtnMobile').onclick = () => { toggleTheme(); updateThemeIcon(); };
 
 // ── Hamburger / drawer
 const hamburger = document.getElementById('hamburger');
@@ -126,7 +115,6 @@ function isMobile() { return window.innerWidth <= 700; }
 
 function syncMobileControls() {
   const mobile = isMobile();
-  document.getElementById('themeBtnMobile').style.display  = mobile ? '' : 'none';
   document.getElementById('userMenuMobile').style.display  = mobile ? '' : 'none';
 }
 syncMobileControls();
