@@ -35,31 +35,31 @@ const auth      = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
 // ── Theme ────────────────────────────────────────────────
-function applyTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  localStorage.setItem('kizumi-theme', theme);
-}
+// function applyTheme(theme) {
+//   document.documentElement.setAttribute('data-theme', theme);
+//   localStorage.setItem('kizumi-theme', theme);
+// }
 
-function initTheme() {
-  const saved = localStorage.getItem('kizumi-theme');
-  if (saved) { applyTheme(saved); return; }
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  applyTheme(prefersDark ? 'dark' : 'light');
-}
+// function initTheme() {
+//   const saved = localStorage.getItem('kizumi-theme');
+//   if (saved) { applyTheme(saved); return; }
+//   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+//   applyTheme(prefersDark ? 'dark' : 'light');
+// }
 
-function toggleTheme() {
-  const current = document.documentElement.getAttribute('data-theme') || 'dark';
-  applyTheme(current === 'dark' ? 'light' : 'dark');
-  updateThemeIcon();
-}
+// function toggleTheme() {
+//   const current = document.documentElement.getAttribute('data-theme') || 'dark';
+//   applyTheme(current === 'dark' ? 'light' : 'dark');
+//   updateThemeIcon();
+// }
 
-function updateThemeIcon() {
-  const btn = document.querySelector('.theme-toggle');
-  if (!btn) return;
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  btn.textContent = isDark ? '☀️' : '🌙';
-  btn.title = isDark ? 'Switch to light mode' : 'Switch to dark mode';
-}
+// function updateThemeIcon() {
+//   const btn = document.querySelector('.theme-toggle');
+//   if (!btn) return;
+//   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+//   btn.textContent = isDark ? '☀️' : '🌙';
+//   btn.title = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+// }
 
 // ── Auth Guard (for protected pages) ────────────────────
 // Call this on pages that REQUIRE login (e.g. index.html/dashboard)
@@ -105,9 +105,6 @@ export {
   requireAuth,
   redirectIfAuthed,
   logout,
-  initTheme,
-  toggleTheme,
-  updateThemeIcon,
-  applyTheme,
+  
   sendEmailVerification
 };

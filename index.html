@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,11 +16,11 @@
     <a href="about.html" class="nav-link-hide">About</a>
     <a href="login.html">Log in</a>
     <a href="signup.html" class="nav-btn">Get Started</a>
-    <button class="theme-toggle" id="themeBtn" title="Toggle theme">☀️</button>
+    <!-- <button class="theme-toggle" id="themeBtn" title="Toggle theme">☀️</button> -->
   </div>
   <!-- Mobile controls -->
   <div style="display:flex;align-items:center;gap:8px;">
-    <button class="theme-toggle" id="themeBtnMobile" title="Toggle theme" style="display:none;">☀️</button>
+    <!-- <button class="theme-toggle" id="themeBtnMobile" title="Toggle theme" style="display:none;">☀️</button> -->
     <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -126,29 +126,12 @@
 </footer>
 
 <script type="module">
-  import { initTheme, toggleTheme, updateThemeIcon, redirectIfAuthed } from './auth.js';
-  initTheme();
-  updateThemeIcon();
-  window.toggleTheme = toggleTheme;
+  import { redirectIfAuthed } from './auth.js';
   redirectIfAuthed('dashboard.html');
 
-  // ── Hamburger / drawer
+  // ── Hamburger / drawer toggle ──
   const hamburger = document.getElementById('hamburger');
   const drawer    = document.getElementById('navDrawer');
-
-  function isMobile() { return window.innerWidth <= 700; }
-
-  // Show mobile theme btn on small screens
-  function syncMobileTheme() {
-    const mobileTbtn = document.getElementById('themeBtnMobile');
-    if (mobileTbtn) {
-      mobileTbtn.style.display = isMobile() ? '' : 'none';
-    }
-  }
-  syncMobileTheme();
-  window.addEventListener('resize', syncMobileTheme);
-
-  document.getElementById('themeBtnMobile')?.addEventListener('click', () => { toggleTheme(); updateThemeIcon(); });
 
   hamburger.addEventListener('click', () => {
     const open = hamburger.classList.toggle('open');
@@ -165,16 +148,13 @@
     });
   });
 
-  // Close on outside click
+  // Close drawer on outside click
   document.addEventListener('click', (e) => {
     if (!hamburger.contains(e.target) && !drawer.contains(e.target)) {
       hamburger.classList.remove('open');
       drawer.classList.remove('open');
     }
   });
-
-  // Desktop theme btn
-  document.getElementById('themeBtn').onclick = () => { toggleTheme(); updateThemeIcon(); };
 </script>
 </body>
 </html>
