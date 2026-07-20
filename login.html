@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -123,27 +123,12 @@
 <script type="module">
 import {
   auth,
-  initTheme, toggleTheme, updateThemeIcon,
   redirectIfAuthed,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
   signInWithGoogle,
   sendEmailVerification
 } from './auth.js';
-
-// ── Theme
-initTheme();
-updateThemeIcon();
-document.getElementById('themeBtn').onclick = () => { toggleTheme(); updateThemeIcon(); };
-
-// ── Mobile controls
-function syncMobile() {
-  const mb = document.getElementById('themeBtnMobile');
-  if (mb) mb.style.display = window.innerWidth <= 700 ? '' : 'none';
-}
-syncMobile();
-window.addEventListener('resize', syncMobile);
-document.getElementById('themeBtnMobile').onclick = () => { toggleTheme(); updateThemeIcon(); };
 
 // ── Hamburger
 const hamburger = document.getElementById('hamburger');
