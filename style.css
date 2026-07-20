@@ -1220,6 +1220,25 @@ footer p { font-size: 13px; color: var(--text-3); }
 .team-info .team-role { color: var(--accent); font-size: 13px; font-weight: 600; margin-bottom: 10px; }
 .team-info p { color: var(--text-2); font-size: 14px; line-height: 1.7; }
 
+.team-name-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.team-name-row h3 {
+  margin-bottom: 0; /* Overrides the default h3 margin so the icon centers properly */
+}
+.linkedin-btn {
+  display: inline-flex;
+  align-items: center;
+  opacity: 0.8;
+  transition: all var(--transition);
+}
+.linkedin-btn:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
 
 body.auth-checking {
   visibility: hidden;
@@ -1237,6 +1256,20 @@ body.auth-checking {
 
 
 @media (max-width: 700px) {
+
+  .hero-bg,
+  .auth-main::before,
+  .auth-main::after {
+    display: none !important;
+  }
+
+  /* Optional: Remove the blur on the navbar to save even more memory */
+  .navbar, 
+  .nav-drawer {
+    backdrop-filter: none;
+    background: #f0faf5; /* Solid fallback color */
+  }
+  
   /* ── Navbar: show hamburger, hide desktop links ── */
   .nav-links {
     display: none;
@@ -1400,6 +1433,10 @@ body.auth-checking {
   /* ── Skeleton ── */
   .skeleton-job {
     padding: 16px 14px;
+  }
+
+  .team-name-row {
+    justify-content: center;
   }
 }
 
